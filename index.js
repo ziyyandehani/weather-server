@@ -19,7 +19,8 @@ async function fetchWeather() {
     const data = await response.json();
 
     latestWeather = data;
-    console.log("Data cuaca diperbarui:", new Date().toISOString(), data.main);
+    console.log("Data cuaca diperbarui:", new Date().toISOString(), data);
+    
   } catch (err) {
     console.error("Gagal ambil data cuaca:", err.message);
   }
