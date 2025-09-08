@@ -3,7 +3,7 @@ from flask import Flask, jsonify
 import requests
 import schedule, time, threading
 
-app = Flask(__name__)
+server = Flask(__name__)
 
 latest_weather = {}
 
