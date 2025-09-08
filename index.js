@@ -12,7 +12,7 @@ let latestWeather = null;
 async function fetchWeather() {
   try {
     const city = "Malang"; // ganti sesuai lokasi
-    const apiKey = process.env.OWM_API_KEY; // masukkan di Railway sebagai variable
+    const apiKey = '689bd19c7d61c8c14869750378aaa033'; // masukkan di Railway sebagai variable
     const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`;
 
     const response = await fetch(url);
