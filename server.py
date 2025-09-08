@@ -1,27 +1,23 @@
+import os
 from flask import Flask, jsonify
 import requests
-import schedule
-import time
-import threading
-import os
+import schedule, time, threading
 
 app = Flask(__name__)
-latest_weather = None
 
-API_KEY = os.getenv("OWM_API_KEY")  # set di Railway Variable
-CITY = "Malang"                     # ganti lokasi sesuai kebutuhan
+latest_weather = {}
 
 def fetch_weather():
     global latest_weather
-    url = f"https://api.openweathermap.org/data/2.5/weather?q={CITY}&appid={API_KEY}&units=metric"
-    try:
-        r = requests.get(url)
-        latest_weather = r.json()
-        print("Data cuaca diperbarui:", latest_weather["main"])
-    except Exception as e:
-        print("Gagal ambil data cuaca:", e)
+    api_key = os.environ.get("OWM_API_KEY")
+    city = "Malang"
+    url = f"https://api.openweathermap.org/data/2.5/weather?q={city}&appid={api_key}&units=metric"
+    r = requests.get(url)
+    latest_weather = r.json()
+    print("Weather updated:", latest_weather)
 
-def scheduler():
+# Jalanin scheduler di background
+def run_scheduler():
     schedule.every(5).minutes.do(fetch_weather)
     while True:
         schedule.run_pending()
@@ -35,7 +31,6 @@ def home():
     })
 
 if __name__ == "__main__":
-    fetch_weather()  # ambil sekali di awal
-    t = threading.Thread(target=scheduler, daemon=True)
-    t.start()
-    app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 5000)))
+    port = int(os.environ.get("PORT", 5000))
+    threading.Thread(target=run_scheduler, daemon=True).start()
+    app.run(host="0.0.0.0", port=port)
