@@ -23,7 +23,7 @@ def run_scheduler():
         schedule.run_pending()
         time.sleep(1)
 
-@app.route("/")
+@server.route("/")
 def home():
     return jsonify({
         "status": "server jalan",
